@@ -137,6 +137,98 @@ Then update `BACKEND_URL` in `content.js` to `http://localhost:3000/explain` and
 
 ---
 
+# How to Use Explain This Diff — Local Setup Tutorial
+
+This guide gets the extension running on your own machine in about 5 minutes.
+
+---
+
+## What you need
+- Google Chrome
+- The `explain-this-diff` folder from this repo (extension files)
+- Nothing else — the backend is already deployed, so no server setup required
+
+---
+
+## Step 1: Download the extension files
+
+Clone or download this repo, and locate the `explain-this-diff` folder. Keep its internal structure exactly as-is:
+
+```
+explain-this-diff/
+├── manifest.json
+├── content.js
+├── content.css
+└── icons/
+    ├── icon16.png
+    ├── icon48.png
+    └── icon128.png
+```
+
+## Step 2: Open Chrome's extensions page
+
+Type this into your address bar:
+```
+chrome://extensions
+```
+
+## Step 3: Turn on Developer Mode
+
+Look at the **top-right corner** of the page — there's a toggle labeled **"Developer mode"**. Switch it on.
+
+## Step 4: Load the extension
+
+1. Click **"Load unpacked"** (top-left)
+2. Select the `explain-this-diff` folder (the one containing `manifest.json`)
+3. You should see a new card appear with the extension's name and purple icon
+
+## Step 5: Try it on a real pull request
+
+1. Go to any public GitHub repository
+2. Open any pull request
+3. Click the **"Files changed"** tab
+4. Look for the **"✨ Explain this Diff"** button next to the tab bar
+5. Click it
+
+Within a few seconds (longer on the very first click, since the backend may need to "wake up" — see note below), a summary panel will appear below the tabs with a plain-English explanation of the changes.
+
+---
+
+## Good first PR to test on
+
+If you want a quick, guaranteed-to-work test case, try a small dependency bump PR — search GitHub for something like `is:pr dependabot` in any public repo. These tend to have small, simple diffs (like a version number change), which makes it easy to verify the AI summary is accurate.
+
+---
+
+## Troubleshooting
+
+**Button doesn't appear:**
+- Make sure you're on the `.../pull/<number>/files` tab, not "Conversation"
+- Try a hard refresh of the page: `Ctrl+Shift+R`
+- Check `chrome://extensions` for any red error text on the extension's card
+
+**Clicking the button does nothing / shows an error panel:**
+- The backend runs on a free hosting tier and "sleeps" after inactivity — the **first** request after a while can take 20–50 seconds. Wait, then try again.
+- Open DevTools (`F12`) → Console tab, and check for red errors — these usually point directly at the problem.
+
+**Summary looks incomplete:**
+- Very large files that GitHub hides behind a "Load diff" button are handled automatically, but extremely large PRs may still take a moment longer to fully expand before the summary is generated.
+
+---
+
+## Updating the extension after making code changes
+
+If you edit `content.js`, `content.css`, or `manifest.json` yourself:
+
+1. Save your changes
+2. Go to `chrome://extensions`
+3. Click the small refresh icon on the extension's card (not the whole page's refresh)
+4. Reload the GitHub tab you're testing on — a normal reload is usually enough, but use `Ctrl+Shift+R` if changes don't seem to appear
+
+---
+
+That's it — no build step, no npm install needed on your machine for the extension itself, since it's plain JavaScript loaded directly by Chrome.
+
 ## License
 
 MIT
