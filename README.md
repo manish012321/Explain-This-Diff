@@ -83,7 +83,18 @@ explain-diff-backend/        # Express server
 
 ## Setup
 
-### 1. Backend
+### For users — just install the extension
+The backend is deployed and live, so you don't need to run anything locally.
+
+1. Go to `chrome://extensions`
+2. Enable **Developer mode** (top right)
+3. Click **Load unpacked** and select the `explain-this-diff` folder
+4. Open any GitHub pull request's **"Files changed"** tab
+5. Click **✨ Explain this Diff**
+
+> Note: the backend runs on Render's free tier, so the very first request after a period of inactivity can take 20-50 seconds while the server wakes up. Subsequent requests are fast.
+
+### For development — running the backend locally
 
 ```bash
 cd explain-diff-backend
@@ -101,27 +112,17 @@ Run it:
 node index.js
 ```
 
-You should see `Server running on http://localhost:3000`.
-
-### 2. Extension
-
-1. Go to `chrome://extensions`
-2. Enable **Developer mode** (top right)
-3. Click **Load unpacked** and select the `explain-this-diff` folder
-4. Open any GitHub pull request's **"Files changed"** tab
-5. Click **✨ Explain this Diff**
-
-The backend must be running locally for the extension to work (see [Deployment](#deployment--roadmap) below for removing this requirement).
+Then update `BACKEND_URL` in `content.js` to `http://localhost:3000/explain` and reload the extension.
 
 ---
 
 ## Known limitations / What I'd improve next
 
-- **Backend is local-only right now** — the extension currently points at `http://localhost:3000`, so the server must be running on the same machine. Next step: deploy to Render/Railway and update `BACKEND_URL`.
-- **No caching yet** — clicking the button twice on the same diff re-calls the AI both times, burning API quota unnecessarily for identical input.
+- **No automated tests yet** — the extraction and rendering logic would benefit from unit tests (e.g. Jest) given how much of it depends on GitHub's DOM structure.
 - **Diff extraction is text-only** — it reads visible diff lines but doesn't yet handle collapsed/truncated large diffs that GitHub hides behind "Load more" links.
 - **Single AI provider** — tightly coupled to Groq's API shape; a provider-agnostic adapter would make swapping models easier.
-- **No automated tests yet** — the extraction and rendering logic would benefit from unit tests (e.g. Jest) given how much of it depends on GitHub's DOM structure.
+- **In-memory cache resets on server restart** — fine for a portfolio project's traffic level; a production version would use Redis so the cache survives deploys and restarts.
+- **Free-tier hosting means cold starts** — the first request after inactivity takes 20-50 seconds while Render wakes the server. A paid tier or a keep-alive ping would remove this.
 
 ---
 
