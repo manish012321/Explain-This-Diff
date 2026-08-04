@@ -9,9 +9,9 @@
     "128": "icons/icon128.png"
   },
   "host_permissions": [
-    "https://github.com/*",
-    "http://localhost:3000/*"
-  ],
+  "https://github.com/*",
+  "https://explain-this-diff.onrender.com/*"
+],
   "content_scripts": [
     {
       "matches": ["https://github.com/*/pull/*"],

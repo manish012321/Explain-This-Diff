@@ -1,5 +1,5 @@
 console.log("Explain This Diff: content script loaded");
-const BACKEND_URL = "http://localhost:3000/explain";
+const BACKEND_URL = "https://explain-this-diff.onrender.com/explain";
 
 function extractDiffText() {
   const files = document.querySelectorAll(".file");
