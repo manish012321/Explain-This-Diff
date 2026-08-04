@@ -1,6 +1,5 @@
 console.log("Explain This Diff: content script loaded");
-const PORT = process.env.PORT || 3000;
-const BACKEND_URL = `${PORT}/explain`;
+const BACKEND_URL = "http://localhost:3000/explain";
 
 function extractDiffText() {
   const files = document.querySelectorAll(".file");
